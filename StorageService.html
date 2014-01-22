@@ -3,6 +3,10 @@
     <link rel="stylesheet" href="reveal.js/css/reveal.css">
     <link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
     <style>
+        .reveal section {
+            text-align: left;
+        }
+
         .reveal dl {
             margin-left: 10%;
         }
@@ -63,16 +67,20 @@
             </dl>
         </section>
         <section>
-            <h2>Client interface</h2>
-            <dl>
-                <dt>DataStore</dt>
-                    <dd>PHP: class with <code>get($key)</code> and 
-                    <code>put($key, $value)</code> methods</dd>
-                <dt>Storage Service</dt>
-                    <dd>PHP: <code>curl_multi</code> based web service
-                    interface with <code>get($url)</code> methods</dd>
-                    <dd>Others: any HTTP client</dd>
-            </dl>
+            <h2>Client interface: DataStore</h2>
+            PHP: class with <pre><code>
+                    get($key); 
+                    put($key, $data)</code></pre>
+
+            <br/>
+            <h2>Client interface: Storage Service</h2>
+            PHP: <code>curl_multi</code> based web service interface (see REST
+            service interface RFC):
+            <pre><code>
+            get($url);
+            put($url, array( 'body' =&gt; $data) );
+            </code></pre>
+            Node.js etc: any HTTP client
         </section>
     </div>
 </div>
