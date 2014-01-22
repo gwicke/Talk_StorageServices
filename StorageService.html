@@ -1,0 +1,109 @@
+<html>
+<head>
+    <link rel="stylesheet" href="reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
+    <style>
+        .reveal dl {
+            margin-left: 10%;
+        }
+        .reveal dt {
+            text-align: left;
+        }
+            
+        .reveal dd {
+            text-align: left;
+            font-weight: normal;
+            font-size: 80%;
+            padding-left: 3em;
+        }
+    </style>
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>Storage services</h1>
+            <dl>
+                <dt>DataStore</dt>
+                <dd><a
+                    href="https://mediawiki.org/wiki/DataStore"
+                    >mediawiki.org/wiki/DataStore</a></dd>
+                <dt>Storage Service</dt> 
+                <dd><a
+                    href="https://www.mediawiki.org/wiki/Requests_for_comment/Storage_service"
+                    >mediawiki.org/wiki/Requests_for_comment/Storage_service</a>
+                    </dd>
+            </dl>
+        </section>
+        <section>
+            <h2>Common goals</h2>
+            <dl>
+                <dt>Storage backend abstraction</dt>
+                    <dd>raise level of abstraction</dd>
+                    <dd>simplicity for users</dd>
+                    <dd>ability to optimize backend independently</dd>
+                <dt>Share storage implementations</dt>
+                    <dd>don't repeat yourself</dd>
+            </dl>
+        </section>
+        <section>
+            <h2>Storage service goals</h2>
+            <dl>
+                <dt>Different bucket types<dt>
+                    <dd>Revision storage (Rashomon), key-value, ..</dd>
+                <dt>API versioning</dt>
+                    <dd>evolve the API without breaking clients (immediately)</dd>
+                <dt>Reusable as external content API</dt>
+                    <dd>caching / REST</dd>
+                <dt>Scalability and robustness</dt>
+                    <dd>Scales to many machines, no single point of failure</dd>
+            </dl>
+        </section>
+        <section>
+            <h2>Client interface</h2>
+            <dl>
+                <dt>DataStore</dt>
+                    <dd>PHP: class with <code>get($key)</code> and 
+                    <code>put($key, $value)</code> methods</dd>
+                <dt>Storage Service</dt>
+                    <dd>PHP: <code>curl_multi</code> based web service
+                    interface with <code>get($url)</code> methods</dd>
+                    <dd>Others: any HTTP client</dd>
+            </dl>
+        </section>
+    </div>
+</div>
+<script src="reveal.js/lib/js/head.min.js"></script>
+<script src="reveal.js/js/reveal.min.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+                { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+});
+</script>
+</body>
+</html>
