@@ -2,28 +2,19 @@
 <head>
     <link rel="stylesheet" href="reveal.js/css/reveal.css">
     <link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
     <style>
         .reveal section {
             text-align: left;
         }
-
-        .reveal dl {
-            margin-left: 10%;
-        }
-        .reveal dt {
-            text-align: left;
-        }
             
-        .reveal dd {
-            text-align: left;
-            font-weight: normal;
+        .reveal section dl dd {
             font-size: 80%;
-            padding-left: 3em;
+            padding-left: 2em;
         }
     </style>
 
-    <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
 </head>
 <body>
 <div class="reveal">
@@ -47,8 +38,9 @@
             <dl>
                 <dt>Storage backend abstraction</dt>
                     <dd>raise level of abstraction</dd>
-                    <dd>simplicity for users</dd>
-                    <dd>ability to optimize backend independently</dd>
+                    <dd>simplicity for users (caching, backend selection,
+                    optimization)</dd>
+                    <dd>optimize backend independently</dd>
                 <dt>Share storage implementations</dt>
                     <dd>don't repeat yourself</dd>
             </dl>
@@ -57,28 +49,39 @@
             <h2>Storage service goals</h2>
             <dl>
                 <dt>Different bucket types<dt>
-                    <dd>Revision storage (Rashomon), key-value, ..</dd>
+                    <dd>Revision storage (Rashomon), unordered key-value,
+                    ordered key-value, counters, ..</dd>
                 <dt>API versioning</dt>
-                    <dd>evolve the API without breaking clients (immediately)</dd>
+                    <dd>evolve the API without breaking clients</dd>
                 <dt>Reusable as external content API</dt>
                     <dd>caching / REST</dd>
                 <dt>Scalability and robustness</dt>
-                    <dd>Scales to many machines, no single point of failure</dd>
+                    <dd>Scale to many machines, no single point of failure</dd>
             </dl>
         </section>
         <section>
             <h2>Client interface: DataStore</h2>
             PHP: class with <pre><code>
-                    get($key); 
-                    put($key, $data)</code></pre>
+                    $s-&gt;get($key); 
+                    $s-&gt;put($key, $data)</code></pre>
 
             <br/>
             <h2>Client interface: Storage Service</h2>
-            PHP: <code>curl_multi</code> based web service interface (see REST
-            service interface RFC):
+            PHP: Web service interface with support for parallelism / batching (see 
+            <a
+                href="https://www.mediawiki.org/wiki/Requests_for_comment/PHP_Virtual_REST_Service"
+                >Virtual REST service RFC</a>):
             <pre><code>
-            get($url);
-            put($url, array( 'body' =&gt; $data) );
+            $s-&gt;get('/bucket/key');
+            $s-&gt;put('/bucket/key', $data);
+            // parallelism
+            $s-&gt;run(
+                array(
+                    array( 'GET', '/bucket/key1' ),
+                    array( 'GET', '/bucket/key2' ),
+                    array( 'PUT', , array( 'body' =&gt; $data ) )
+                )
+            );
             </code></pre>
             Node.js etc: any HTTP client
         </section>
